@@ -13,7 +13,7 @@ La monnaie du royaume est l'**Ambre** (qui remplace l'or).
 | **Vagabonds (Neutres)**| *À définir* | Animaux timides et effrayés vivant dans des terriers, qui attendent d'être recrutés avec de l'Ambre. |
 | **Archers / Chasseurs**| *À définir* | Unités à distance défendant les murs et chassant le gibier le jour pour rapporter des revenus. |
 | **Piquiers / Défenseurs**| *À définir* | Unités de corps à corps très résistantes qui absorbent les chocs derrière ou devant les murs. |
-| **Le Banquier** | *À définir* | Un PNJ qui amasse l'Ambre en surplus le jour et donne des intérêts le lendemain. |
+| **Le Banquier** | **Hamster** 🐹 | Amasse l'Ambre en surplus dans ses bajoues. Plus il est riche, plus ses joues sont gonflées et lourdes ! |
 
 ## 🌑 Les Ennemis (L'équivalent des "Greeds")
 | Rôle (Mécanique) | Animal Choisi | Justification Thématique & Visuelle |
