@@ -1,0 +1,23 @@
+[
+  {
+    "id": "unit_vagrant",
+    "type": "Vagrant",
+    "health": 1,
+    "movement_speed": 40.0,
+    "coin_cost": 1
+  },
+  {
+    "id": "unit_archer",
+    "type": "Archer",
+    "health": 1,
+    "movement_speed": 65.5,
+    "coin_cost": 2
+  },
+  {
+    "id": "unit_builder",
+    "type": "Builder",
+    "health": 1,
+    "movement_speed": 50.0,
+    "coin_cost": 3
+  }
+]
