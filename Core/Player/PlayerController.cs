@@ -3,37 +3,56 @@ using KingdomCore.Events;
 
 namespace KingdomCore.Player
 {
-    // Node2D car le joueur se déplace dans un espace 2D (il a des coordonnées X et Y)
     public partial class PlayerController : Node2D 
     {
-        // L'attribut [Export] permet de modifier la vitesse directement depuis l'interface visuelle de Godot !
         [Export] 
         public float Speed { get; set; } = 150.0f;
 
-        private int _coinsInPouch = 5;
+        // Identifiant pour le Multi Local (1 = P1, 2 = P2)
+        [Export]
+        public int PlayerId { get; set; } = 1;
 
-        // _Process est appelé par le moteur à chaque frame
+        private int _coinsInPouch = 5;
+        
+        // Touches par défaut (pour le P1)
+        private string _inputLeft = "ui_left";
+        private string _inputRight = "ui_right";
+        private string _inputAction = "ui_accept";
+
+        public override void _Ready()
+        {
+            // Préparation pour le Multijoueur Local : Séparation des touches
+            if (PlayerId == 2)
+            {
+                // Tu devras créer ces Actions dans les paramètres de Godot
+                _inputLeft = "p2_left";
+                _inputRight = "p2_right";
+                _inputAction = "p2_accept";
+            }
+        }
+
         public override void _Process(double delta)
         {
+            // MULTIJOUEUR EN LIGNE : 
+            // Si on n'est pas le propriétaire de ce personnage sur le réseau, 
+            // on ne lit pas le clavier, on laisse le réseau bouger le perso !
+            if (!IsMultiplayerAuthority()) return;
+
             HandleMovement((float)delta);
             HandleAction();
         }
 
         private void HandleMovement(float delta)
         {
-            // Input.GetAxis renvoie -1 (gauche), 0 (rien), ou 1 (droite).
-            // "ui_left" et "ui_right" sont des raccourcis par défaut dans Godot (Flèches directionnelles)
-            float direction = Input.GetAxis("ui_left", "ui_right"); 
-            
-            // On déplace le personnage sur l'axe X (horizontal)
+            float direction = Input.GetAxis(_inputLeft, _inputRight); 
             Position += new Vector2(direction * Speed * delta, 0);
         }
 
         private void HandleAction()
         {
-            // "ui_accept" est souvent la barre Espace ou la touche Entrée par défaut
-            if (Input.IsActionJustPressed("ui_accept"))
+            if (Input.IsActionJustPressed(_inputAction))
             {
+                // Plus tard, en ligne, ceci sera un appel RPC vers le Serveur
                 DropCoin();
             }
         }
@@ -43,15 +62,12 @@ namespace KingdomCore.Player
             if (_coinsInPouch > 0)
             {
                 _coinsInPouch--;
-                GD.Print($"[Player] Pièce jetée ! Il reste {_coinsInPouch} pièces.");
-                
-                // C'est ici que la magie du découplage opère !
-                // Le joueur ne cherche pas le sol ou un PNJ. Il annonce juste qu'une pièce est tombée.
+                GD.Print($"[Player {PlayerId}] Pièce jetée ! Reste {_coinsInPouch}.");
                 GameManager.Events.Publish(new CoinDroppedEvent(Position.X, 1));
             }
             else
             {
-                GD.Print("[Player] Plus de pièces dans la bourse !");
+                GD.Print($"[Player {PlayerId}] Plus de pièces !");
             }
         }
     }
