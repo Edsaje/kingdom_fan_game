@@ -32,39 +32,72 @@ namespace KingdomCore.AI
         public override void _Ready()
         {
             _rng.Randomize();
-            CampPosition = GlobalPosition; // Par défaut, son camp est là où il spawn
+            CampPosition = GlobalPosition; 
             PickNewWanderTarget();
+
+            // L'esprit tend l'oreille (écoute l'EventBus)
+            GameManager.Events.Subscribe<CoinDroppedEvent>(OnAmberDropped);
+        }
+
+        public override void _ExitTree()
+        {
+            // Toujours nettoyer la mémoire quand un objet est détruit !
+            GameManager.Events.Unsubscribe<CoinDroppedEvent>(OnAmberDropped);
+        }
+
+        private void OnAmberDropped(CoinDroppedEvent ev)
+        {
+            if (_currentState == SpiritState.Recruited) return; // Déjà recruté
+
+            // Si l'ambre tombe à moins de 300 pixels, l'esprit la repère !
+            if (GlobalPosition.DistanceTo(ev.DropPosition) < 300.0f)
+            {
+                _currentState = SpiritState.SeekingAmber;
+                _wanderTargetX = ev.DropPosition.X; // Sa nouvelle cible est la pièce
+                GD.Print("Esprit : Ambre détecté, j'y cours !");
+            }
         }
 
         public override void _PhysicsProcess(double delta)
         {
-            // RÈGLE 5 : Seul le Serveur a le droit de bouger les PNJ !
             if (!Multiplayer.IsServer()) return; 
 
             Vector2 velocity = Velocity;
 
-            // Appliquer la gravité pour qu'il touche le sol
             if (!IsOnFloor())
             {
                 velocity.Y += _gravity * (float)delta;
             }
 
-            // Exécution de l'état actuel
             switch (_currentState)
             {
                 case SpiritState.Wandering:
                     velocity = ProcessWanderState(velocity, (float)delta);
                     break;
                 case SpiritState.SeekingAmber:
-                    // TODO: L'esprit court vers l'ambre (Étape suivante)
+                    velocity = ProcessSeekingState(velocity, (float)delta);
                     break;
                 case SpiritState.FleeingToCamp:
-                    // TODO: L'esprit rentre au camp en pleurant
                     break;
             }
 
             Velocity = velocity;
-            MoveAndSlide(); // Fonction Godot magique qui gère les collisions
+            MoveAndSlide(); 
+        }
+
+        private Vector2 ProcessSeekingState(Vector2 velocity, float delta)
+        {
+            float direction = Mathf.Sign(_wanderTargetX - GlobalPosition.X);
+            velocity.X = direction * (Speed * 1.5f); // Il court un peu plus vite pour l'ambre !
+
+            // S'il atteint la cible (l'ambre)
+            if (Mathf.Abs(GlobalPosition.X - _wanderTargetX) < 10.0f)
+            {
+                velocity.X = 0;
+                _currentState = SpiritState.Recruited;
+                GD.Print("Esprit : Ambre atteint ! Je suis recruté !");
+            }
+            return velocity;
         }
 
         private Vector2 ProcessWanderState(Vector2 velocity, float delta)
