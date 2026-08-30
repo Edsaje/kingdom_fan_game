@@ -19,12 +19,15 @@ namespace KingdomCore.Player
         private string _inputRight = "ui_right";
         private string _inputAction = "ui_accept";
 
+        private Sprite2D _sprite;
+
         public override void _Ready()
         {
-            // Préparation pour le Multijoueur Local : Séparation des touches
+            // Récupérer le Sprite2D enfant pour pouvoir le retourner plus tard
+            _sprite = GetNode<Sprite2D>("Sprite2D");
+
             if (PlayerId == 2)
             {
-                // Tu devras créer ces Actions dans les paramètres de Godot
                 _inputLeft = "p2_left";
                 _inputRight = "p2_right";
                 _inputAction = "p2_accept";
@@ -33,9 +36,6 @@ namespace KingdomCore.Player
 
         public override void _Process(double delta)
         {
-            // MULTIJOUEUR EN LIGNE : 
-            // Si on n'est pas le propriétaire de ce personnage sur le réseau, 
-            // on ne lit pas le clavier, on laisse le réseau bouger le perso !
             if (!IsMultiplayerAuthority()) return;
 
             HandleMovement((float)delta);
@@ -46,6 +46,13 @@ namespace KingdomCore.Player
         {
             float direction = Input.GetAxis(_inputLeft, _inputRight); 
             Position += new Vector2(direction * Speed * delta, 0);
+
+            // Effet miroir automatique
+            if (_sprite != null)
+            {
+                if (direction < 0) _sprite.FlipH = true;       // Regarde à gauche
+                else if (direction > 0) _sprite.FlipH = false; // Regarde à droite
+            }
         }
 
         private void HandleAction()
