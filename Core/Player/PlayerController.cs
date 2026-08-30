@@ -3,7 +3,7 @@ using KingdomCore.Events;
 
 namespace KingdomCore.Player
 {
-    public partial class PlayerController : Node2D 
+    public partial class PlayerController : CharacterBody2D 
     {
         // RÈGLE 4 : Plus de chiffre magique hardcodé. Initialisé par le JSON.
         [Export] 
@@ -20,12 +20,13 @@ namespace KingdomCore.Player
 
         private Sprite2D _sprite;
         private AnimationPlayer _animPlayer;
+        
+        // Gravité du moteur
+        private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
         public override void _Ready()
         {
             _sprite = GetNode<Sprite2D>("Sprite2D");
-            
-            // On tente de récupérer l'AnimationPlayer s'il existe
             _animPlayer = GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
 
             var kingData = GameManager.Data.GetUnit("unit_king");
@@ -47,7 +48,8 @@ namespace KingdomCore.Player
             }
         }
 
-        public override void _Process(double delta)
+        // On passe de _Process à _PhysicsProcess car on gère de la gravité !
+        public override void _PhysicsProcess(double delta)
         {
             if (!IsMultiplayerAuthority()) return;
 
@@ -57,8 +59,18 @@ namespace KingdomCore.Player
 
         private void HandleMovement(float delta)
         {
+            Vector2 velocity = Velocity;
+
+            // Application de la gravité
+            if (!IsOnFloor())
+            {
+                velocity.Y += _gravity * delta;
+            }
+
             float direction = Input.GetAxis(_inputLeft, _inputRight); 
-            Position += new Vector2(direction * Speed * delta, 0);
+            
+            // On modifie la vélocité horizontale au lieu de se téléporter (Position += ...)
+            velocity.X = direction * Speed;
 
             if (_sprite != null)
             {
@@ -66,19 +78,21 @@ namespace KingdomCore.Player
                 else if (direction > 0) _sprite.FlipH = false;
             }
 
-            // Gestion de l'animation
             if (_animPlayer != null)
             {
                 if (direction != 0)
                 {
-                    _animPlayer.Play("walk"); // Joue l'animation (remplace par le nom de ton animation si différent)
+                    _animPlayer.Play("walk");
                 }
                 else
                 {
-                    // Arrête l'animation et remet à la frame de base si on ne bouge pas
                     _animPlayer.Play("RESET"); 
                 }
             }
+
+            // On applique la vélocité finale au moteur physique
+            Velocity = velocity;
+            MoveAndSlide();
         }
 
         private void HandleAction()
