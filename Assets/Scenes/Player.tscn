@@ -20,7 +20,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_e5q2x"]
 resource_name = "walk"
-length = 0.73333335
+length = 0.5
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
