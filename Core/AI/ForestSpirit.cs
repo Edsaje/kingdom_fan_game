@@ -103,6 +103,10 @@ namespace KingdomCore.AI
                     break;
                 case SpiritState.FleeingToCamp:
                     break;
+                case SpiritState.Recruited:
+                    // Une fois recruté, il s'arrête (En attendant d'avoir un "Centre-Ville" vers lequel se diriger)
+                    velocity.X = 0;
+                    break;
             }
 
             Velocity = velocity;

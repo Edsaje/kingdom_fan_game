@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c5q7pvp1ds6fj" path="res://Assets/Scenes/forest_spirit.tscn" id="2_2rron"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yhj6v"]
-size = Vector2(2027, 20)
+size = Vector2(3476, 33)
 
 [node name="TestLevel" type="Node2D" unique_id=2052264997]
 
@@ -12,11 +12,11 @@ size = Vector2(2027, 20)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1651470880]
-position = Vector2(77.5, 0)
+position = Vector2(-27, 6.5)
 shape = SubResource("RectangleShape2D_yhj6v")
 
 [node name="Player" parent="." unique_id=971384602 instance=ExtResource("1_numvf")]
 position = Vector2(-76, -316)
 
 [node name="ForestSpirit" parent="." unique_id=1765710845 instance=ExtResource("2_2rron")]
-position = Vector2(241, -475)
+position = Vector2(697, -125)
