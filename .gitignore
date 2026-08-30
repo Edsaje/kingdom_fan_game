@@ -1,3 +1,27 @@
 # Godot 4+ specific ignores
 .godot/
-/android/
+*.translation
+export_presets.cfg
+
+# C# / .NET specific ignores
+.vs/
+.mono/
+obj/
+bin/
+*.csproj.user
+mono_crash.*.json
+data_*/
+
+# IDEs (VS Code, Rider, etc.)
+.idea/
+.vscode/
+
+# Exports & Builds (dossiers pour les futurs exécutables)
+/Builds/
+/Exports/
+/Export/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
