@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://33l7tpi0fk7w"]
+
+[ext_resource type="Script" uid="uid://bwsat7jgvsicq" path="res://Core/Player/PlayerController.cs" id="1_3e2tf"]
+[ext_resource type="Texture2D" uid="uid://d27iwyf8qrptx" path="res://Assets/Sprites/owl_king_walk.png" id="2_b2ifw"]
+
+[sub_resource type="Animation" id="Animation_aee6e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_e5q2x"]
+resource_name = "walk"
+length = 0.73333335
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mifcl"]
+_data = {
+&"RESET": SubResource("Animation_aee6e"),
+&"walk": SubResource("Animation_e5q2x")
+}
+
+[node name="Player" type="Node2D" unique_id=971384602]
+script = ExtResource("1_3e2tf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=718491976]
+texture = ExtResource("2_b2ifw")
+hframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1926664852]
+libraries/ = SubResource("AnimationLibrary_mifcl")
+autoplay = &"walk"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=857915167]

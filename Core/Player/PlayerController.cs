@@ -70,7 +70,7 @@ namespace KingdomCore.Player
             {
                 _coinsInPouch--;
                 GD.Print($"[Player {PlayerId}] Pièce jetée ! Reste {_coinsInPouch}.");
-                GameManager.Events.Publish(new CoinDroppedEvent(Position.X, 1));
+                GameManager.Events.Publish(new CoinDroppedEvent(Position, 1));
             }
             else
             {

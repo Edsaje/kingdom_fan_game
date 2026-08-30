@@ -1,14 +1,17 @@
+using Godot;
+
 namespace KingdomCore.Events
 {
-    // Exemple d'événement lorsqu'une pièce est jetée et touche le sol
+    public interface IGameEvent { }
+
     public struct CoinDroppedEvent : IGameEvent
     {
-        public float PositionX { get; }
+        public Vector2 DropPosition { get; }
         public int CoinValue { get; }
 
-        public CoinDroppedEvent(float positionX, int coinValue)
+        public CoinDroppedEvent(Vector2 dropPosition, int coinValue)
         {
-            PositionX = positionX;
+            DropPosition = dropPosition;
             CoinValue = coinValue;
         }
     }

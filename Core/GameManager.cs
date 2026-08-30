@@ -47,9 +47,9 @@ namespace KingdomCore
             // 1. Instancier (Créer un clone) du modèle de pièce
             Node2D coinInstance = _coinScene.Instantiate<Node2D>();
             
-            // 2. Le placer à la coordonnée X envoyée par le Joueur (l'événement). 
-            // On le met un peu en hauteur (Y = -20) pour simuler la bourse.
-            coinInstance.Position = new Vector2(ev.PositionX, -20);
+            // 2. Le placer à la position du Joueur. 
+            // On le met un peu en hauteur (Y - 20) pour simuler la bourse.
+            coinInstance.Position = new Vector2(ev.DropPosition.X, ev.DropPosition.Y - 20);
             
             // 3. Demander au moteur Godot d'ajouter cette pièce dans le "Niveau" actuel (la scène courante)
             GetTree().CurrentScene.AddChild(coinInstance);
