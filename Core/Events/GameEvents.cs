@@ -2,8 +2,6 @@ using Godot;
 
 namespace KingdomCore.Events
 {
-    public interface IGameEvent { }
-
     public struct CoinDroppedEvent : IGameEvent
     {
         public Vector2 DropPosition { get; }
