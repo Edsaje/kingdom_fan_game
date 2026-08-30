@@ -7,6 +7,7 @@
 radius = 23.086792
 
 [node name="Coin" type="RigidBody2D" unique_id=267344682]
+collision_layer = 8
 script = ExtResource("1_v1td3")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=218622005]

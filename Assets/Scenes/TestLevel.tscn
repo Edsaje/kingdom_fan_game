@@ -9,13 +9,14 @@ size = Vector2(2027, 20)
 [node name="TestLevel" type="Node2D" unique_id=2052264997]
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=23407692]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1651470880]
 position = Vector2(77.5, 0)
 shape = SubResource("RectangleShape2D_yhj6v")
 
 [node name="Player" parent="." unique_id=971384602 instance=ExtResource("1_numvf")]
-position = Vector2(-1237, -276)
+position = Vector2(-76, -316)
 
 [node name="ForestSpirit" parent="." unique_id=1765710845 instance=ExtResource("2_2rron")]
 position = Vector2(241, -475)

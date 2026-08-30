@@ -7,6 +7,7 @@
 radius = 65.11528
 
 [node name="ForestSpirit" type="CharacterBody2D" unique_id=1765710845]
+collision_layer = 4
 script = ExtResource("1_u2l7a")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=941339537]

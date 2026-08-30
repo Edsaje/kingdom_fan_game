@@ -41,7 +41,11 @@ _data = {
 &"walk": SubResource("Animation_e5q2x")
 }
 
-[node name="Player" type="Node2D" unique_id=971384602]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhj6v"]
+size = Vector2(266, 346)
+
+[node name="Player" type="CharacterBody2D" unique_id=1556641743]
+collision_layer = 2
 script = ExtResource("1_3e2tf")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=718491976]
@@ -53,3 +57,7 @@ libraries/ = SubResource("AnimationLibrary_mifcl")
 autoplay = &"walk"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=857915167]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=33534691]
+position = Vector2(-18, 57)
+shape = SubResource("RectangleShape2D_yhj6v")
