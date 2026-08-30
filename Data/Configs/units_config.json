@@ -1,5 +1,12 @@
 [
   {
+    "id": "unit_king",
+    "type": "Vagrant",
+    "health": 3,
+    "movement_speed": 150.0,
+    "coin_cost": 0
+  },
+  {
     "id": "unit_vagrant",
     "type": "Vagrant",
     "health": 1,

@@ -5,16 +5,15 @@ namespace KingdomCore.Player
 {
     public partial class PlayerController : Node2D 
     {
+        // RÈGLE 4 : Plus de chiffre magique hardcodé. Initialisé par le JSON.
         [Export] 
-        public float Speed { get; set; } = 150.0f;
+        public float Speed { get; private set; }
 
-        // Identifiant pour le Multi Local (1 = P1, 2 = P2)
         [Export]
         public int PlayerId { get; set; } = 1;
 
         private int _coinsInPouch = 5;
         
-        // Touches par défaut (pour le P1)
         private string _inputLeft = "ui_left";
         private string _inputRight = "ui_right";
         private string _inputAction = "ui_accept";
@@ -23,8 +22,19 @@ namespace KingdomCore.Player
 
         public override void _Ready()
         {
-            // Récupérer le Sprite2D enfant pour pouvoir le retourner plus tard
             _sprite = GetNode<Sprite2D>("Sprite2D");
+
+            // RÈGLE 4 : Data-Driven. On lit la vitesse depuis le fichier.
+            var kingData = GameManager.Data.GetUnit("unit_king");
+            if (kingData != null)
+            {
+                Speed = kingData.MovementSpeed;
+            }
+            else
+            {
+                GD.PrintErr("Données du Roi introuvables dans le JSON !");
+                Speed = 150.0f; // Sécurité
+            }
 
             if (PlayerId == 2)
             {
@@ -47,11 +57,10 @@ namespace KingdomCore.Player
             float direction = Input.GetAxis(_inputLeft, _inputRight); 
             Position += new Vector2(direction * Speed * delta, 0);
 
-            // Effet miroir automatique
             if (_sprite != null)
             {
-                if (direction < 0) _sprite.FlipH = true;       // Regarde à gauche
-                else if (direction > 0) _sprite.FlipH = false; // Regarde à droite
+                if (direction < 0) _sprite.FlipH = true;
+                else if (direction > 0) _sprite.FlipH = false;
             }
         }
 
@@ -59,22 +68,28 @@ namespace KingdomCore.Player
         {
             if (Input.IsActionJustPressed(_inputAction))
             {
-                // Plus tard, en ligne, ceci sera un appel RPC vers le Serveur
-                DropCoin();
+                // RÈGLE 5 : Architecture Serveur Autoritaire.
+                // On n'exécute plus l'action directement. On Demande au Serveur.
+                Rpc(nameof(DropCoinRpc));
             }
         }
 
-        private void DropCoin()
+        // CallLocal = true permet au joueur hôte de s'envoyer le message à lui-même
+        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+        private void DropCoinRpc()
         {
+            // RÈGLE 5 : Seul le Serveur (autorité suprême) a le droit de dépenser l'argent.
+            if (!Multiplayer.IsServer()) return;
+
             if (_coinsInPouch > 0)
             {
                 _coinsInPouch--;
-                GD.Print($"[Player {PlayerId}] Pièce jetée ! Reste {_coinsInPouch}.");
+                GD.Print($"[Serveur] Éclat d'ambre jeté par Joueur {PlayerId} ! Reste {_coinsInPouch}.");
                 GameManager.Events.Publish(new CoinDroppedEvent(Position, 1));
             }
             else
             {
-                GD.Print($"[Player {PlayerId}] Plus de pièces !");
+                GD.Print($"[Serveur] Le joueur {PlayerId} n'a plus de monnaie !");
             }
         }
     }
