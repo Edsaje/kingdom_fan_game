@@ -46,6 +46,32 @@ namespace KingdomCore.Player
                 _inputRight = "p2_right";
                 _inputAction = "p2_accept";
             }
+
+            // On récupère le "filet à papillon" et on écoute quand quelque chose rentre dedans
+            var pickupZone = GetNodeOrNull<Area2D>("PickupZone");
+            if (pickupZone != null)
+            {
+                pickupZone.BodyEntered += OnPickupZoneBodyEntered;
+            }
+        }
+
+        private void OnPickupZoneBodyEntered(Node2D body)
+        {
+            if (!Multiplayer.IsServer()) return; // Seul le serveur gère les ramassages
+
+            // Si l'objet qui est entré est bien une Pièce (Coin)
+            if (body is KingdomCore.Items.Coin coin)
+            {
+                // On vérifie le cooldown de 1 seconde
+                if (coin.CanBePickedUpByKing)
+                {
+                    _coinsInPouch++;
+                    GD.Print($"[Serveur] Le Hibou a ramassé un Ambre ! Total en poche : {_coinsInPouch}");
+                    
+                    // On supprime physiquement la pièce du jeu
+                    coin.QueueFree(); 
+                }
+            }
         }
 
         // On passe de _Process à _PhysicsProcess car on gère de la gravité !

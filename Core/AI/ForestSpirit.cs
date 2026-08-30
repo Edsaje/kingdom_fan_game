@@ -37,6 +37,30 @@ namespace KingdomCore.AI
 
             // L'esprit tend l'oreille (écoute l'EventBus)
             GameManager.Events.Subscribe<CoinDroppedEvent>(OnAmberDropped);
+
+            // On écoute le filet à papillon
+            var pickupZone = GetNodeOrNull<Area2D>("PickupZone");
+            if (pickupZone != null)
+            {
+                pickupZone.BodyEntered += OnPickupZoneBodyEntered;
+            }
+        }
+
+        private void OnPickupZoneBodyEntered(Node2D body)
+        {
+            if (!Multiplayer.IsServer()) return;
+
+            // Si l'esprit cherchait activement de l'ambre, ET que l'objet touché est une Pièce
+            if (_currentState == SpiritState.SeekingAmber && body is KingdomCore.Items.Coin coin)
+            {
+                coin.QueueFree(); // L'esprit "mange" la pièce, elle disparaît
+                _currentState = SpiritState.Recruited;
+                
+                // Petit effet visuel : On teinte l'esprit en bleu/doré pour montrer qu'il est recruté !
+                Modulate = new Color(0.5f, 0.8f, 1.0f); 
+                
+                GD.Print("Esprit : Ambre absorbé ! Je suis maintenant un citoyen !");
+            }
         }
 
         public override void _ExitTree()
@@ -90,12 +114,10 @@ namespace KingdomCore.AI
             float direction = Mathf.Sign(_wanderTargetX - GlobalPosition.X);
             velocity.X = direction * (Speed * 1.5f); // Il court un peu plus vite pour l'ambre !
 
-            // S'il atteint la cible (l'ambre)
+            // S'il est arrivé à la position théorique de l'ambre, il s'arrête et attend que la physique (PickupZone) fasse son travail.
             if (Mathf.Abs(GlobalPosition.X - _wanderTargetX) < 10.0f)
             {
                 velocity.X = 0;
-                _currentState = SpiritState.Recruited;
-                GD.Print("Esprit : Ambre atteint ! Je suis recruté !");
             }
             return velocity;
         }

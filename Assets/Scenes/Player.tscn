@@ -44,6 +44,9 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yhj6v"]
 size = Vector2(266, 346)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_yhj6v"]
+radius = 168.96153
+
 [node name="Player" type="CharacterBody2D" unique_id=1556641743]
 collision_layer = 2
 script = ExtResource("1_3e2tf")
@@ -61,3 +64,11 @@ autoplay = &"walk"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=33534691]
 position = Vector2(-18, 57)
 shape = SubResource("RectangleShape2D_yhj6v")
+
+[node name="PickupZone" type="Area2D" parent="." unique_id=1013570821]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupZone" unique_id=148782063]
+position = Vector2(-4, 81)
+shape = SubResource("CircleShape2D_yhj6v")

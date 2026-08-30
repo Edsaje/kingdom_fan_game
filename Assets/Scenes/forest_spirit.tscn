@@ -6,6 +6,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_yhj6v"]
 radius = 65.11528
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dngtr"]
+radius = 86.209045
+
 [node name="ForestSpirit" type="CharacterBody2D" unique_id=1765710845]
 collision_layer = 4
 script = ExtResource("1_u2l7a")
@@ -15,3 +18,10 @@ texture = ExtResource("2_det1e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=819152794]
 shape = SubResource("CircleShape2D_yhj6v")
+
+[node name="PickupZone" type="Area2D" parent="." unique_id=1201201456]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupZone" unique_id=1432095300]
+shape = SubResource("CircleShape2D_dngtr")
