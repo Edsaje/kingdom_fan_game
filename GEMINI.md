@@ -28,8 +28,3 @@ Ce projet Godot 4.x (C# / .NET) respecte strictement les règles d'ingénierie s
 6. **Performance C# (Garbage Collector)**
    - Interdiction d'utiliser `new` à l'intérieur de `_Process`.
    - Événements de l'EventBus définis comme des `struct` (types valeur).
-
-7. **Pédagogie Pro-Active (Obsidian)**
-   - Lors de l'introduction d'un concept majeur (Pattern, architecture) ou lors de la résolution d'un bug classique de moteur, l'Agent IA DOIT générer un fichier Markdown de leçon.
-   - Ces fichiers doivent être écrits directement dans le dossier du joueur : `C:\Users\quent\Documents\Obsidian Vault\KingdomLike`.
-   - Ton : Pédagogique, clair, avec des métaphores visuelles.
