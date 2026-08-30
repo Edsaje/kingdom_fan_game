@@ -19,12 +19,15 @@ namespace KingdomCore.Player
         private string _inputAction = "ui_accept";
 
         private Sprite2D _sprite;
+        private AnimationPlayer _animPlayer;
 
         public override void _Ready()
         {
             _sprite = GetNode<Sprite2D>("Sprite2D");
+            
+            // On tente de récupérer l'AnimationPlayer s'il existe
+            _animPlayer = GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
 
-            // RÈGLE 4 : Data-Driven. On lit la vitesse depuis le fichier.
             var kingData = GameManager.Data.GetUnit("unit_king");
             if (kingData != null)
             {
@@ -33,7 +36,7 @@ namespace KingdomCore.Player
             else
             {
                 GD.PrintErr("Données du Roi introuvables dans le JSON !");
-                Speed = 150.0f; // Sécurité
+                Speed = 150.0f;
             }
 
             if (PlayerId == 2)
@@ -61,6 +64,20 @@ namespace KingdomCore.Player
             {
                 if (direction < 0) _sprite.FlipH = true;
                 else if (direction > 0) _sprite.FlipH = false;
+            }
+
+            // Gestion de l'animation
+            if (_animPlayer != null)
+            {
+                if (direction != 0)
+                {
+                    _animPlayer.Play("walk"); // Joue l'animation (remplace par le nom de ton animation si différent)
+                }
+                else
+                {
+                    // Arrête l'animation et remet à la frame de base si on ne bouge pas
+                    _animPlayer.Play("RESET"); 
+                }
             }
         }
 
