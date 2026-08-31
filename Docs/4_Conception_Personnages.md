@@ -16,6 +16,15 @@ La monnaie du royaume est l'**Ambre** (qui remplace l'or).
 | **Le Banquier** | **Hamster** 🐹 | Amasse l'Ambre en surplus dans ses bajoues. Plus il est riche, plus ses joues sont gonflées et lourdes ! |
 
 ## 🌑 Les Ennemis (L'équivalent des "Greeds")
-| Rôle (Mécanique) | Animal Choisi | Justification Thématique & Visuelle |
+
+Dans notre univers, il n'y a pas de monstres sanguinaires : ce sont des **animaux de la forêt corrompus/ensorcelés** par une magie obscure (une brume violacée, des yeux luisants, des ronces spectrales).
+
+> [!NOTE]
+> **Mécanique de "Purification" (Non-Violence Poétique)** :
+> Quand nos unités réduisent les PV d'un ennemi à 0, il ne "meurt" pas : la brume maléfique s'évapore en fumée scintillante, l'animal retrouve sa forme normale et s'enfuit joyeusement dans les bois, libéré du sortilège !
+
+| Rôle (Mécanique) | Animal / Forme Ensorcelée | Comportement & Thématique |
 | :--- | :--- | :--- |
-| **Les Pilleurs** | *À définir* | Créatures nocturnes qui attaquent les murs pour voler l'Ambre et dé-recruter les sujets. |
+| **Les Pilleurs Rapides** | **Belettes / Rats d'Ombre** 🐀 | Petits, rapides et sournois. Attaquent les murs la nuit pour voler l'Ambre qui traîne ou arracher les outils des sujets. |
+| **Les Brutes (Siège)** | **Sangliers / Ours Possédés** 🐗 | Lourds et recouverts d'écorce corrompue. Ils chargent les barricades de castors pour créer des brèches. |
+| **Les Ravisseurs Aériens** | **Chauves-souris / Corbeaux Sombres** 🦇 | Volent par-dessus les murs pour attraper des esprits ou des citoyens et les emporter dans la nuit. |
